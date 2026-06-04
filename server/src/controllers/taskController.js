@@ -45,7 +45,7 @@ function getTaskById(req, res) {
  * Body: { title (required), description?, dueDate? }
  */
 function createTask(req, res) {
-  const { title, description, dueDate } = req.body;
+  const { title, description, dueDate, priority } = req.body;
 
   if (!title || !title.trim()) {
     return res.status(400).json({ error: 'Title is required' });
@@ -56,6 +56,7 @@ function createTask(req, res) {
     title: title.trim(),
     description: description ? description.trim() : '',
     dueDate: dueDate || null,
+    priority: priority || 'medium',
     completed: false,
     order: Date.now(),
     createdAt: new Date().toISOString(),
@@ -79,7 +80,7 @@ function updateTask(req, res) {
 
   if (index === -1) return res.status(404).json({ error: 'Task not found' });
 
-  const { title, description, dueDate, completed, order } = req.body;
+  const { title, description, dueDate, completed, order, priority } = req.body;
 
   if (title !== undefined && !title.trim()) {
     return res.status(400).json({ error: 'Title cannot be empty' });
@@ -92,6 +93,7 @@ function updateTask(req, res) {
     ...(dueDate !== undefined && { dueDate: dueDate || null }),
     ...(completed !== undefined && { completed: Boolean(completed) }),
     ...(order !== undefined && { order }),
+    ...(priority !== undefined && { priority }),
     updatedAt: new Date().toISOString(),
   };
 
