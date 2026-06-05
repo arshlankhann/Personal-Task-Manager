@@ -10,9 +10,7 @@ async function connectDB() {
     throw new Error('MONGODB_URI is not defined in environment variables');
   }
 
-  await mongoose.connect(uri, {
-    serverSelectionTimeoutMS: 5000, // fail fast if Atlas is unreachable
-  });
+  await mongoose.connect(uri);
   isConnected = true;
   console.log('MongoDB connected');
 }
