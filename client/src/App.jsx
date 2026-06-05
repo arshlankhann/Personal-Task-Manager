@@ -34,7 +34,7 @@ export default function App() {
     }
   };
 
-  const addTask = async ({ title, description, priority }) => {
+  const addTask = async ({ title, description, dueDate }) => {
     try {
       const response = await fetch(`${API_BASE}/tasks`, {
         method: 'POST',
@@ -42,8 +42,7 @@ export default function App() {
         body: JSON.stringify({
           title,
           description: description || '',
-          priority: priority || 'medium',
-          dueDate: new Date().toISOString().split('T')[0],
+          dueDate: dueDate || null,
         }),
       });
       if (!response.ok) throw new Error('Failed to create task');
@@ -57,12 +56,12 @@ export default function App() {
   };
 
   // ✅ PUT /api/tasks/:id — Edit task
-  const editTask = async (id, { title, description, priority }) => {
+  const editTask = async (id, { title, description, dueDate }) => {
     try {
       const response = await fetch(`${API_BASE}/tasks/${id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ title, description, priority }),
+        body: JSON.stringify({ title, description, dueDate }),
       });
       if (!response.ok) throw new Error('Failed to update task');
       const updatedTask = await response.json();

@@ -1,4 +1,5 @@
 export default function Header({ totalTasks, completedTasks }) {
+  const activeTasks = totalTasks - completedTasks;
   const percent = totalTasks ? Math.round((completedTasks / totalTasks) * 100) : 0;
 
   return (
@@ -11,9 +12,21 @@ export default function Header({ totalTasks, completedTasks }) {
           </span>
         )}
       </div>
-      <p className="text-sm sm:text-base text-gray-500 mt-1">
-        {completedTasks} of {totalTasks} tasks completed
-      </p>
+
+      {/* Active / Completed count pills */}
+      {totalTasks > 0 && (
+        <div className="flex gap-2 mt-3">
+          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs sm:text-sm font-medium bg-indigo-100 text-indigo-700 border border-indigo-200">
+            <span className="w-2 h-2 rounded-full bg-indigo-500 inline-block"></span>
+            {activeTasks} active
+          </span>
+          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs sm:text-sm font-medium bg-green-100 text-green-700 border border-green-200">
+            <span className="w-2 h-2 rounded-full bg-green-500 inline-block"></span>
+            {completedTasks} completed
+          </span>
+        </div>
+      )}
+
       {totalTasks > 0 && (
         <div className="mt-3 w-full bg-gray-200 rounded-full h-1.5 sm:h-2">
           <div

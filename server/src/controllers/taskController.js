@@ -93,7 +93,7 @@ async function updateTask(req, res) {
     if (priority !== undefined) updates.priority = priority;
 
     const task = await Task.findByIdAndUpdate(req.params.id, updates, {
-      new: true,
+      returnDocument: 'after',
       runValidators: true,
     });
 

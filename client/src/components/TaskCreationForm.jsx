@@ -2,16 +2,16 @@ import { useState } from 'react';
 
 export default function TaskCreationForm({ onAdd, onCancel }) {
   const [title, setTitle] = useState('');
-  const [priority, setPriority] = useState('medium');
   const [description, setDescription] = useState('');
+  const [dueDate, setDueDate] = useState('');
 
   const handleSubmit = (e) => {
     e.preventDefault();
     if (title.trim()) {
-      onAdd({ title: title.trim(), priority, description: description.trim() });
+      onAdd({ title: title.trim(), description: description.trim(), dueDate: dueDate || null });
       setTitle('');
       setDescription('');
-      setPriority('medium');
+      setDueDate('');
     }
   };
 
@@ -43,16 +43,13 @@ export default function TaskCreationForm({ onAdd, onCancel }) {
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Priority</label>
-          <select
-            value={priority}
-            onChange={(e) => setPriority(e.target.value)}
+          <label className="block text-sm font-medium text-gray-700 mb-1">Due Date</label>
+          <input
+            type="date"
+            value={dueDate}
+            onChange={(e) => setDueDate(e.target.value)}
             className="w-full px-3 sm:px-4 py-2 text-sm sm:text-base border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white"
-          >
-            <option value="low">🟢 Low</option>
-            <option value="medium">🟡 Medium</option>
-            <option value="high">🔴 High</option>
-          </select>
+          />
         </div>
       </div>
 
