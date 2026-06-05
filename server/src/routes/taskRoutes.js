@@ -8,7 +8,7 @@ const {
   deleteTask,
   toggleTask,
   reorderTasks,
-} = require('../controllers/taskController');
+} = require('../controllers/tasks');
 
 // Reorder (must be before /:id routes)
 router.patch('/reorder', reorderTasks);
