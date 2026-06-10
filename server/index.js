@@ -15,6 +15,9 @@ const allowedOrigins = process.env.CLIENT_URL ? process.env.CLIENT_URL.split(','
 app.use(cors({ origin: allowedOrigins, credentials: true }));
 app.use(express.json());
 
+
+app.use(express.static("public"))
+
 // Routes
 app.use('/api/tasks', taskRoutes);
 
