@@ -18,10 +18,6 @@ app.use(express.json());
 // Routes
 app.use('/api/tasks', taskRoutes);
 
-// Health check
-app.get('/api/health', (req, res) => {
-  res.json({ status: 'OK', message: 'Task Manager API is running' });
-});
 
 // 404 handler
 app.use((req, res) => {

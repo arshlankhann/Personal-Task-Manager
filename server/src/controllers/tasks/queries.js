@@ -1,6 +1,5 @@
 const Task = require('../../models/Task');
 const { connectDB } = require('../../utils/db');
-const { notFound } = require('./helpers');
 
 /**
  * GET /api/tasks
@@ -23,17 +22,4 @@ async function getAllTasks(req, res) {
   res.json(tasks);
 }
 
-/**
- * GET /api/tasks/:id
- * Returns a single task by ID.
- */
-async function getTaskById(req, res) {
-  await connectDB();
-
-  const task = await Task.findById(req.params.id);
-  if (!task) return notFound(res);
-
-  res.json(task);
-}
-
-module.exports = { getAllTasks, getTaskById };
+module.exports = { getAllTasks };
