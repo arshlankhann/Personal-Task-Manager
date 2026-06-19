@@ -1,31 +1,26 @@
 const Task = require('../../models/Task');
-const { connectDB } = require('../../utils/db');
-const { notFound } = require('./helpers');
 
-/**
- * PATCH /api/tasks/:id/toggle
- * Flips a task's completed status.
- */
-async function toggleTask(req, res) {
-  await connectDB();
+const toggleComplete = async (req, res) => {
+  try {
+    const { id } = req.params;
+    // Fetch first so we can read the current `completed` value
+    const task = await Task.findById(id);
+    if (!task) {
+      return res.status(404).json({ error: 'Task not found' });
+    }
+    // Flip the flag and persist
+    task.completed = !task.completed;
+    await task.save();
 
-  const task = await Task.findById(req.params.id);
-  if (!task) return notFound(res);
+    res.json(task);
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to toggle Task' });
+  }
+};
 
-  task.completed = !task.completed;
-  await task.save();
 
-  res.json(task);
-}
 
-/**
- * PATCH /api/tasks/reorder
- * Accepts an ordered array of IDs to bulk-update task positions.
- * Body: { orderedIds: string[] }
- */
 async function reorderTasks(req, res) {
-  await connectDB();
-
   const { orderedIds } = req.body;
 
   if (!Array.isArray(orderedIds)) {
@@ -39,4 +34,4 @@ async function reorderTasks(req, res) {
   res.json({ message: 'Tasks reordered successfully' });
 }
 
-module.exports = { toggleTask, reorderTasks };
+module.exports = { toggleComplete, reorderTasks };

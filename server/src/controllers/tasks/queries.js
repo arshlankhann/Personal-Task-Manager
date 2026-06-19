@@ -1,25 +1,26 @@
 const Task = require('../../models/Task');
-const { connectDB } = require('../../utils/db');
 
-/**
- * GET /api/tasks
- * Returns all tasks, optionally filtered by status or search query.
- */
+
 async function getAllTasks(req, res) {
-  await connectDB();
-
-  const { status, search } = req.query;
-  const filter = {};
-
-  if (status === 'active')     filter.completed = false;
-  if (status === 'completed')  filter.completed = true;
-
-  if (search?.trim()) {
-    filter.title = { $regex: search.trim(), $options: 'i' };
-  }
-
-  const tasks = await Task.find(filter).sort({ createdAt: -1 });
-  res.json(tasks);
+    try {
+        const task = await Task.find().sort({ order: 1 })
+        res.json(task);
+    } catch (error) {
+        res.status(500).json({ error: "Failed to fetch tasks" })
+    }
 }
 
-module.exports = { getAllTasks };
+async function getTaskById(req,res) {
+    try{
+        const {id} = req.params;
+        const task = await Task.findById(id);
+        if(!task){
+            return res.status(404).json({error: "Task not found"})
+        }
+        res.json(task);
+    }catch(error){
+        res.status(500).json({error: "Failed to fetch task"})
+    }
+}
+
+module.exports = { getAllTasks, getTaskById}

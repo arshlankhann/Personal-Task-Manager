@@ -22,7 +22,7 @@ const taskSchema = new mongoose.Schema(
     },
     order: {
       type: Number,
-      default: Date.now,
+      default: () => -Date.now(),
     },
   },
   {
